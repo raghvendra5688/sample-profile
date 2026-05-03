@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raghvendra Mall, PhD - QCRI</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  color: #333;
+  background: #f2f2f2;
+}
+a { color: #006b7b; text-decoration: none; }
+a:hover { text-decoration: underline; color: #004f5a; }
+
+/* ── PAGE WRAPPER ────────────────────────────────────────── */
+.page-wrapper {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+}
+
+/* ── WHITE CONTENT BOX ───────────────────────────────────── */
+.content-box {
+  background: #fff;
+  padding: 32px 36px 36px;
+}
+
+/* ── PROFILE HEADER: photo LEFT, info RIGHT (Sidra style) ── */
+.profile-header {
+  display: flex;
+  gap: 28px;
+  align-items: flex-start;
+  margin-bottom: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+/* Photo is first child → naturally on the left */
+.profile-photo { width: 175px; flex-shrink: 0; }
+.avatar-placeholder {
+  width: 175px;
+  height: 215px;
+  background: #d9eef0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52px;
+  font-weight: 800;
+  color: #006b7b;
+  font-family: Georgia, serif;
+  letter-spacing: -2px;
+}
+
+/* Info on the right */
+.profile-info { flex: 1; padding-top: 4px; }
+.profile-info h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+.role-line {
+  font-size: 12px;
+  font-weight: 700;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+.contact-list { list-style: none; margin: 14px 0; }
+.contact-list li { font-size: 13.5px; color: #444; margin-bottom: 5px; }
+.contact-list li b { font-weight: 600; }
+.contact-list li a { color: #006b7b; }
+
+.social-row { display: flex; gap: 8px; margin-top: 10px; }
+.social-row a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #bbb;
+  border-radius: 50%;
+  color: #555;
+  transition: background .15s, color .15s, border-color .15s;
+}
+.social-row a:hover { background: #006b7b; color: #fff; border-color: #006b7b; text-decoration: none; }
+.social-row a svg { width: 14px; height: 14px; fill: currentColor; display: block; }
+
+/* ── ACCORDION ───────────────────────────────────────────── */
+.accordion { }
+.acc-item { margin-bottom: 6px; }
+
+/* Trigger: full teal background, white text */
+.acc-trigger {
+  width: 100%;
+  background: #006b7b;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  text-align: left;
+  outline: none;
+  transition: background .15s;
+}
+.acc-trigger:hover { background: #005a69; }
+.acc-trigger:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+
+.acc-trigger h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+/* Circle +/− icon, white border */
+.acc-icon {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid rgba(255,255,255,0.7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1;
+  pointer-events: none;
+  margin-left: 14px;
+  user-select: none;
+  transition: background .2s, border-color .2s;
+}
+.acc-trigger[aria-expanded="true"] .acc-icon {
+  background: rgba(255,255,255,0.25);
+  border-color: #fff;
+}
+
+/* Panel */
+.acc-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.38s ease;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+}
+.acc-panel.open { max-height: 5000px; }
+
+.acc-body {
+  padding: 22px 22px 26px;
+  font-size: 14.5px;
+  color: #444;
+  line-height: 1.75;
+}
+.acc-body p { margin-bottom: 12px; }
+.acc-body p:last-child { margin-bottom: 0; }
+
+/* Research numbered list */
+.acc-body ol.research-list { padding-left: 20px; margin-top: 8px; }
+.acc-body ol.research-list li { margin-bottom: 10px; padding-left: 4px; }
+
+/* Publication intro */
+.pub-intro {
+  font-size: 12.5px;
+  color: #777;
+  font-style: italic;
+  margin-bottom: 14px;
+}
+
+/* Publication numbered list */
+ol.pub-list {
+  list-style: none;
+  counter-reset: pub;
+  padding: 0;
+}
+ol.pub-list li {
+  counter-increment: pub;
+  display: flex;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.65;
+  align-items: flex-start;
+}
+ol.pub-list li:last-child { border-bottom: none; }
+ol.pub-list li::before {
+  content: counter(pub) ".";
+  font-weight: 700;
+  color: #006b7b;
+  min-width: 22px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+ol.pub-list li em { font-style: italic; }
+ol.pub-list li strong { font-weight: 700; color: #111; }
+.me { font-weight: 700; color: #006b7b; }
+.pub-flag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: #e6f4f5;
+  color: #006b7b;
+  border: 1px solid #99d1d8;
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 5px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.pub-flag.corr { background: #fff3e0; color: #b84e00; border-color: #f5c07a; }
+
+
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer {
+  background: #1b3a3a;
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  padding: 28px 32px;
+  text-align: center;
+}
+footer .flinks { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-bottom: 8px; }
+footer .flinks a { color: rgba(255,255,255,0.7); }
+footer .flinks a:hover { color: #fff; text-decoration: underline; }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 620px) {
+  .profile-header { flex-direction: column; }
+  .avatar-placeholder { width: 120px; height: 148px; font-size: 38px; }
+  .profile-photo { width: 120px; }
+  .content-box { padding: 22px 18px 28px; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="content-box">
+
+    <!-- PROFILE HEADER: photo left, info right -->
+    <div class="profile-header">
+
+      <div class="profile-photo">
+        <div class="avatar-placeholder">RM</div>
+      </div>
+
+      <div class="profile-info">
+        <h3>Raghvendra Mall, PhD</h3>
+        <div class="role-line">Senior Scientist — Qatar Computing Research Institute (QCRI), HBKU</div>
+        <div class="role-line" style="margin-top:2px;">Computational Biology &amp; AI for Translational Medicine</div>
+
+        <ul class="contact-list">
+          <li><b>Email:</b> <a href="mailto:raghvendramall@ieee.org">raghvendramall@ieee.org</a></li>
+          <li><b>Address:</b> C12 ZMS Building, Al Raha Beach, Abu Dhabi, U.A.E.</li>
+        </ul>
+
+        <div class="social-row">
+          <!-- Google Scholar -->
+          <a href="https://scholar.google.com/citations?hl=en&user=CfwEb1EAAAAJ" target="_blank" title="Google Scholar">
+            <svg viewBox="0 0 24 24"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5h3.7v7.6C2.3 18 1.4 19.4 1.4 21c0 1.9 1.5 3 3.3 3 1.8 0 3.3-1.1 3.3-3 0-1.6-.9-3-2.3-3.9V9.5h12.6l-7.3-6.5V6l-2.6 2.3L6.1 6V3L12 0z"/></svg>
+          </a>
+          <!-- ORCID -->
+          <a href="https://orcid.org/0000-0003-1779-3150" target="_blank" title="ORCID">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.516.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.016-5.325 5.016h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 3.988-2.484 3.988-3.722 0-2.016-1.284-3.722-3.988-3.722h-2.297z"/></svg>
+          </a>
+          <!-- PubMed -->
+          <a href="https://www.ncbi.nlm.nih.gov/pubmed/?term=Raghvendra+Mall" target="_blank" title="PubMed">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H7l5-8v4h4l-5 8z"/></svg>
+          </a>
+          <!-- ResearchGate -->
+          <a href="https://www.researchgate.net/profile/Raghvendra_Mall" target="_blank" title="ResearchGate">
+            <svg viewBox="0 0 24 24"><path d="M19.586 0c-.818 0-1.508.19-2.073.565-.563.377-.97.936-1.213 1.68a12.088 12.088 0 0 0-.329 2.957c0 1.186.09 2.133.265 2.833.178.698.45 1.217.818 1.553.37.335.87.502 1.496.502.658 0 1.164-.166 1.52-.497.355-.33.601-.832.735-1.506.136-.673.203-1.599.203-2.773v-.09c0-1.018-.065-1.879-.196-2.58a4.2 4.2 0 0 0-.654-1.72C19.773.329 19.194 0 19.586 0zM12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.756 17.61h-1.867l-2.507-4.396h-1.54v4.396H9.075V6.39h3.74c1.087 0 1.902.261 2.449.784.546.521.82 1.24.82 2.153 0 .746-.175 1.37-.524 1.872a2.99 2.99 0 0 1-1.42 1.076l2.616 5.335z"/></svg>
+          </a>
+          <!-- Kaggle -->
+          <a href="https://www.kaggle.com/raghvendrakul" target="_blank" title="Kaggle">
+            <svg viewBox="0 0 24 24"><path d="M18.825 23.859c-.022.092-.117.141-.281.141h-3.139c-.187 0-.351-.082-.492-.248l-5.178-6.589-1.448 1.374v5.111c0 .235-.117.352-.351.352H5.505c-.236 0-.354-.117-.354-.352V.353c0-.233.118-.353.354-.353h2.431c.234 0 .351.12.351.353v14.343l6.203-6.272c.165-.165.33-.246.495-.246h3.239c.144 0 .236.06.285.18.046.149.034.255-.036.315l-6.555 6.344 6.836 8.507c.095.104.117.208.07.334z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div><!-- /profile-header -->
+
+
+    <!-- ACCORDION -->
+    <div class="accordion">
+
+      <!-- BIOGRAPHY -->
+      <div class="acc-item">
+        <button class="acc-trigger" aria-expanded="false" aria-controls="panel-bio" id="btn-bio">
+          <h2>Biography</h2>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="acc-panel" id="panel-bio" role="region" aria-labelledby="btn-bio">
+          <div class="acc-body">
+            <p>Dr. Raghvendra Mall is a Senior Scientist at the Qatar Computing Research Institute (QCRI), HBKU, working at the intersection of machine learning and computational biology. He earned his PhD <em>Summa Cum Laude</em> from KU Leuven, Belgium, under Prof. Johan Suykens.</p>
+            <p>At St. Jude Children's Research Hospital, in the laboratory of Dr. Thirumala-Devi Kanneganti, he made key contributions to understanding PANoptosis — publishing studies in <em>Cell</em>, <em>Science Immunology</em>, and <em>Nucleic Acids Research Cancer</em> that identified NLRP12, ZBP1, and other innate immune sensors as therapeutic targets in cancer and infectious disease. At the Technology Innovation Institute (Abu Dhabi), he founded and directed the Bioinformatics team of 10+ scientists, secured AED 5.5 million in competitive grants, and established collaborations with Caltech and Burjeel Cancer Institute for AI-guided CAR-T cell therapeutics. At QCRI, across his current and earlier tenures, he has developed machine learning frameworks for cancer immune phenotyping, compound–viral protein activity prediction, and multi-cancer biomarker discovery, with results published in <em>Nature Medicine</em>, <em>Briefings in Bioinformatics</em>, and <em>Bioinformatics</em>.</p>
+            <p>Dr. Mall has authored over 90 peer-reviewed publications, holds 5 patents, and has secured grants exceeding AED 5.5 million. He is an IEEE Senior Member, named one of the IEEE Computer Society's Top 30 Early Career Professionals in 2024, a joint winner of the Anti-PD1 DREAM Challenge, and serves as Section Editor at the <em>Journal of Translational Medicine</em>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESEARCH INTERESTS -->
+      <div class="acc-item">
+        <button class="acc-trigger" aria-expanded="false" aria-controls="panel-research" id="btn-research">
+          <h2>Research Interests</h2>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="acc-panel" id="panel-research" role="region" aria-labelledby="btn-research">
+          <div class="acc-body">
+            <p>Dr. Mall's research is centred on <strong>AI-driven multi-omics integration</strong> and its translational impact on human disease. By combining machine learning with transcriptomics, genomics, proteomics, and spatial omics, his group develops tools and biological insights that bridge discovery and clinical application across three themes:</p>
+            <ol class="research-list">
+              <li><strong>Multi-omics integration for disease mechanisms.</strong> Graph neural networks, contrastive learning, and network-based models applied to bulk/single-cell RNA-seq and spatial transcriptomics to decode cancer heterogeneity, PANoptosis signalling, and immune-cancer-microbiome interactions — with direct relevance to patient stratification and clinical trial design.</li>
+              <li><strong>Protein language models &amp; AI-guided biologics design.</strong> Fine-tuning ESM2 and AlphaFold-derived architectures for peptide toxicity, peptide–HLA binding, B-cell epitope discovery, and protein crystallization, in active collaboration with Caltech and Burjeel Cancer Institute for anticancer therapeutics design.</li>
+              <li><strong>Drug discovery &amp; precision medicine.</strong> Embedding-based and generative AI for compound–viral protein activity prediction, drug repurposing, and personalised treatment response in Acute Myeloid Leukemia (AML).</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- SELECTED PUBLICATIONS -->
+      <div class="acc-item">
+        <button class="acc-trigger" aria-expanded="false" aria-controls="panel-pubs" id="btn-pubs">
+          <h2>Selected Publications</h2>
+          <span class="acc-icon">+</span>
+        </button>
+        <div class="acc-panel" id="panel-pubs" role="region" aria-labelledby="btn-pubs">
+          <div class="acc-body">
+            <p class="pub-intro">* equally contributing first authors &nbsp;|&nbsp; + corresponding author &nbsp;|&nbsp; <span class="pub-flag corr">1st/Corr.</span> = first or corresponding author</p>
+            <ol class="pub-list">
+
+              <li><div>"<em>B-cell epitope prediction in the age of machine learning: advancements and challenges</em>" <strong>Journal of Translational Medicine</strong>. 2026. Gabellieri F, Singh A, Gupta S, Bensmail H, Castiglione F+, <span class="me">Mall R</span>+. <span class="pub-flag corr">Corr.</span></div></li>
+
+              <li><div>"<em>Innate immune sensing of dietary alcohol ignites inflammation to drive alcohol-related disease</em>" <strong>Science Advances</strong>. 2026. Jang Y*, Oh SH*, Bae H*, Yu G*, Bae H, Nguyen MQ, <span class="me">Mall R</span>, Patel CN, et al.</div></li>
+
+              <li><div>"<em>VISH-Pred: an ensemble of fine-tuned ESM models for protein toxicity prediction</em>" <strong>Briefings in Bioinformatics</strong>. 2025. <span class="me">Mall R</span>+, Singh A, Patel CN, Guirimand G, Castiglione F. <span class="pub-flag corr">First &amp; Corr.</span></div></li>
+
+              <li><div>"<em>Whole genome CRISPR screen identifies NINJ1 as executioner of inflammatory responses during heat stress</em>" <strong>Nature Communications</strong>. 2024. Han JH*, Karki R*, Mallireddi RKS, <span class="me">Mall R</span>, Sarkar R, Klein J, Berns H, Pruett-Miller SM, Bae SJ, Kanneganti TD.</div></li>
+
+              <li><div>"<em>An atlas and compass of immune-cancer-microbiome interactions conducive to prolonged survival</em>" <strong>Nature Medicine</strong>. 2023. Roelands J, Kuppen PJK, Ahmed E, <span class="me">Mall R</span>, Masoodi T, Singh P, Monaco G, …, Bedognetti D, et al.</div></li>
+
+              <li><div>"<em>NLRP12 activates the inflammasome and inflammatory responses to drive pathology in hemolytic diseases</em>" <strong>Cell</strong>. 2023. Sundaram B*, Pandian N*, <span class="me">Mall R</span>, Wang Y, Malireddi RKS, Karki R, Vogel P, Kanneganti TD.</div></li>
+
+              <li><div>"<em>Pancancer Network Analysis reveals key Master Regulators for Cancer Invasiveness</em>" <strong>Journal of Translational Medicine</strong>. 2023. Jethalia M, Jani SP, Ceccarelli M, <span class="me">Mall R</span>+. <span class="pub-flag corr">Corr.</span></div></li>
+
+              <li><div>"<em>ZBP1-dependent cell death and cytokine storm impede therapeutic efficacy of interferon during coronavirus infection</em>" <strong>Science Immunology</strong>. 2022. Karki R*, Lee S*, <span class="me">Mall R</span>, Pandian N, Wang Y, Sharma BR, Malireddi RKS, Trifkovic S, Vogel P, Webby R, Kanneganti TD.</div></li>
+
+              <li><div>"<em>Pancancer Transcriptomic Profiling Identifies Key PANoptosis Markers as Therapeutic Targets</em>" <strong>Nucleic Acids Research Cancer</strong>. 2022. <span class="me">Mall R</span>+, Bynigeri R, Karki R, Mallireddi RKS, Sharma BR, Kanneganti TD. <span class="pub-flag corr">First &amp; Corr.</span></div></li>
+
+              <li><div>"<em>Immune-related 3-lncRNA signature with prognostic connotation in a multi-cancer setting</em>" <strong>Journal of Translational Medicine</strong>. 2022. <span class="me">Mall R</span>*, Sherif S*, Almeer H, Naik A, Al Homaid A, …, Hendrickx W, Decock J. <span class="pub-flag corr">First &amp; Corr.</span></div></li>
+
+              <li><div>"<em>Network-based identification of key master regulators associated with an immune-silent cancer phenotype</em>" <strong>Briefings in Bioinformatics</strong>. 2021. <span class="me">Mall R</span>+, Saad M, Roelands J, Rinchai D, Kunji K, Almeer H, Hendrickx W, Marincola FM, Ceccarelli M, Bedognetti D. <span class="pub-flag corr">First &amp; Corr.</span></div></li>
+
+              <li><div>"<em>A Modelling Framework for Embedding-based Predictions for Compound-Viral Protein Activity</em>" <strong>Bioinformatics</strong>. 2021. <span class="me">Mall R</span>+, Elbasir A, Almeer H, Islam Z, Kolatkar PR, Chawla S, Ullah E+. <span class="pub-flag corr">First &amp; Corr.</span></div></li>
+
+              <li><div>"<em>RGBM: regularized gradient boosting machines for identification of the transcriptional regulators of discrete glioma subtypes</em>" <strong>Nucleic Acids Research</strong>. 2018. <span class="me">Mall R</span>+*, Cerulo L, Garofano L, Frattini V, Kunji K, Bensmail H, Sabedot TS, …, Ceccarelli M+. <span class="pub-flag corr">First &amp; Corr.</span></div></li>
+
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /accordion -->
+
+  </div><!-- /content-box -->
+</div><!-- /page-wrapper -->
+
+<footer>
+  <div class="flinks">
+    <a href="#">About Us</a>
+    <a href="#">Research</a>
+    <a href="https://raghvendra5688.github.io/raghvendra-mall-site/" target="_blank">Personal Website</a>
+    <a href="mailto:raghvendramall@ieee.org">Contact</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Careers</a>
+  </div>
+  <div>Qatar Computing Research Institute (QCRI) · HBKU · Al Raha Beach, Abu Dhabi, U.A.E.</div>
+  <div style="margin-top:4px;">© 2026 Raghvendra Mall, PhD · Last updated April 2026</div>
+</footer>
+
+<script>
+  document.querySelectorAll('.acc-trigger').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      const panel  = document.getElementById(btn.getAttribute('aria-controls'));
+
+      // Close all
+      document.querySelectorAll('.acc-trigger').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        b.querySelector('.acc-icon').textContent = '+';
+      });
+      document.querySelectorAll('.acc-panel').forEach(p => p.classList.remove('open'));
+
+      // Open this one if it was closed
+      if (!isOpen) {
+        btn.setAttribute('aria-expanded', 'true');
+        btn.querySelector('.acc-icon').textContent = '−';
+        panel.classList.add('open');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
